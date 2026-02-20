@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كأس بطولة حروف</title>
+<link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9982A;
+    --gold-light: #F0C060;
+    --gold-dark: #8B6914;
+    --cream: #F9F0DC;
+    --deep: #1A1008;
+    --amber: #E8A020;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: radial-gradient(ellipse at center, #2A1A05 0%, #0D0805 70%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Scheherazade New', serif;
+    overflow: hidden;
+  }
+
+  /* Ambient particles */
+  .particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--gold-light);
+    animation: float var(--dur) ease-in-out infinite;
+    opacity: 0;
+  }
+
+  @keyframes float {
+    0%, 100% { opacity: 0; transform: translateY(0) scale(0); }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.3; }
+    100% { transform: translateY(-120px) scale(1.5); opacity: 0; }
+  }
+
+  .scene {
+    position: relative;
+    width: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  /* Title */
+  .title-wrap {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeDown 1s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .title-main {
+    font-family: 'Scheherazade New', serif;
+    font-size: 52px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    letter-spacing: 4px;
+    text-shadow: none;
+    filter: drop-shadow(0 0 20px rgba(201,152,42,0.5));
+  }
+
+  .title-sub {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 6px;
+    margin-top: 6px;
+    opacity: 0.8;
+  }
+
+  .divider {
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 10px auto;
+  }
+
+  /* Trophy SVG container */
+  .trophy-container {
+    position: relative;
+    width: 400px;
+    height: 480px;
+    animation: riseUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    opacity: 0;
+  }
+
+  @keyframes riseUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .trophy-glow {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 40px;
+    background: radial-gradient(ellipse, rgba(201,152,42,0.4), transparent 70%);
+    filter: blur(15px);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scaleX(1); }
+    50% { opacity: 1; transform: translateX(-50%) scaleX(1.2); }
+  }
+
+  svg.trophy {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 10px 40px rgba(201,152,42,0.3));
+  }
+
+  /* Shimmer animation on trophy */
+  @keyframes shimmer {
+    0% { stop-color: #F0C060; }
+    50% { stop-color: #fff8e0; }
+    100% { stop-color: #F0C060; }
+  }
+
+  .shine-stop { animation: shimmer 3s ease-in-out infinite; }
+
+  /* Arabic letter decorations */
+  .letters-ring {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    height: 240px;
+    animation: spinSlow 20s linear infinite;
+  }
+
+  @keyframes spinSlow {
+    from { transform: translateX(-50%) rotate(0deg); }
+    to { transform: translateX(-50%) rotate(360deg); }
+  }
+
+  .letter-item {
+    position: absolute;
+    font-family: 'Scheherazade New', serif;
+    font-size: 18px;
+    color: rgba(240,192,96,0.7);
+    transform-origin: 120px 120px;
+  }
+
+  /* Bottom info */
+  .bottom-info {
+    text-align: center;
+    animation: fadeUp 1s ease 0.8s forwards;
+    opacity: 0;
+    margin-top: -20px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .year-text {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 22px;
+    color: var(--gold-light);
+    letter-spacing: 4px;
+  }
+
+  .tagline {
+    font-size: 18px;
+    color: rgba(240,192,96,0.6);
+    margin-top: 5px;
+    letter-spacing: 2px;
+  }
+
+  /* Oud strings shimmer */
+  @keyframes stringVibrate {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; filter: drop-shadow(0 0 3px rgba(240,192,96,0.9)); }
+  }
+
+  .oud-string { animation: stringVibrate 1.5s ease-in-out infinite; }
+  .oud-string:nth-child(2) { animation-delay: 0.2s; }
+  .oud-string:nth-child(3) { animation-delay: 0.4s; }
+  .oud-string:nth-child(4) { animation-delay: 0.6s; }
+  .oud-string:nth-child(5) { animation-delay: 0.8s; }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="scene">
+  <div class="title-wrap">
+    <div class="title-main"> بطولة حروف المجلس</div>
+    <div class="divider"></div>
+    <div class="title-sub">HOROUF CHAMPIONSHIP</div>
+  </div>
+
+  <div class="trophy-container">
+    <div class="trophy-glow"></div>
+
+    <svg class="trophy" viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Gold gradient -->
+        <linearGradient id="goldMain" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#F5D885"/>
+          <stop offset="30%" stop-color="#C9982A" class="shine-stop"/>
+          <stop offset="60%" stop-color="#F0C060"/>
+          <stop offset="100%" stop-color="#8B6914"/>
+        </linearGradient>
+
+        <linearGradient id="goldSide" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#8B6914"/>
+          <stop offset="50%" stop-color="#D4A830"/>
+          <stop offset="100%" stop-color="#8B6914"/>
+        </linearGradient>
+
+        <linearGradient id="goldBody" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#7A5A10"/>
+          <stop offset="20%" stop-color="#E8C050"/>
+          <stop offset="50%" stop-color="#FDE88A"/>
+          <stop offset="80%" stop-color="#E8C050"/>
+          <stop offset="100%" stop-color="#7A5A10"/>
+        </linearGradient>
+
+        <linearGradient id="goldBase" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#E8C050"/>
+          <stop offset="100%" stop-color="#8B6914"/>
+        </linearGradient>
+
+        <linearGradient id="oudBody" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#5C3010"/>
+          <stop offset="50%" stop-color="#8B4A18"/>
+          <stop offset="100%" stop-color="#3A1A06"/>
+        </linearGradient>
+
+        <radialGradient id="cupInner" cx="50%" cy="30%">
+          <stop offset="0%" stop-color="#FFF5C0" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#8B6914" stop-opacity="0.2"/>
+        </radialGradient>
+
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+
+        <filter id="softGlow">
+          <feGaussianBlur stdDeviation="6" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- === OUD (LUTE) - behind trophy === -->
+      <!-- Oud body -->
+      <g transform="translate(50, 180) rotate(-25)" opacity="0.95">
+        <!-- Body (pear shape) -->
+        <ellipse cx="85" cy="120" rx="65" ry="80" fill="url(#oudBody)" stroke="#C9982A" stroke-width="1.5"/>
+        <!-- Sound hole -->
+        <circle cx="85" cy="115" r="25" fill="none" stroke="#C9982A" stroke-width="1" opacity="0.6"/>
+        <!-- Inner rosette pattern -->
+        <circle cx="85" cy="115" r="18" fill="none" stroke="#E8C050" stroke-width="0.8" opacity="0.5"/>
+        <circle cx="85" cy="115" r="10" fill="none" stroke="#E8C050" stroke-width="0.8" opacity="0.4"/>
+        <!-- Decorative lines on body -->
+        <path d="M40,100 Q85,90 130,100" stroke="#C9982A" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <path d="M35,120 Q85,110 135,120" stroke="#C9982A" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <path d="M40,140 Q85,130 130,140" stroke="#C9982A" stroke-width="0.8" fill="none" opacity="0.4"/>
+
+        <!-- Neck -->
+        <rect x="76" y="30" width="18" height="55" rx="4" fill="#6B3A12" stroke="#C9982A" stroke-width="1"/>
+        <!-- Frets -->
+        <line x1="76" y1="45" x2="94" y2="45" stroke="#C9982A" stroke-width="1" opacity="0.7"/>
+        <line x1="76" y1="55" x2="94" y2="55" stroke="#C9982A" stroke-width="1" opacity="0.7"/>
+        <line x1="76" y1="65" x2="94" y2="65" stroke="#C9982A" stroke-width="1" opacity="0.7"/>
+        <line x1="76" y1="75" x2="94" y2="75" stroke="#C9982A" stroke-width="1" opacity="0.7"/>
+
+        <!-- Headstock -->
+        <path d="M72,30 Q85,10 98,30 L94,32 L76,32 Z" fill="#5C3010" stroke="#C9982A" stroke-width="1"/>
+        <!-- Tuning pegs -->
+        <circle cx="76" cy="22" r="4" fill="#C9982A"/>
+        <circle cx="80" cy="14" r="4" fill="#C9982A"/>
+        <circle cx="88" cy="12" r="4" fill="#C9982A"/>
+        <circle cx="94" cy="22" r="4" fill="#C9982A"/>
+
+        <!-- Strings -->
+        <line class="oud-string" x1="85" y1="32" x2="62" y2="195" stroke="#F0C060" stroke-width="0.8" opacity="0.8"/>
+        <line class="oud-string" x1="83" y1="32" x2="68" y2="196" stroke="#F0C060" stroke-width="0.8" opacity="0.8"/>
+        <line class="oud-string" x1="85" y1="32" x2="75" y2="197" stroke="#F0C060" stroke-width="0.7" opacity="0.8"/>
+        <line class="oud-string" x1="87" y1="32" x2="88" y2="197" stroke="#F0C060" stroke-width="0.7" opacity="0.8"/>
+        <line class="oud-string" x1="89" y1="32" x2="100" y2="196" stroke="#F0C060" stroke-width="0.6" opacity="0.7"/>
+
+        <!-- Bridge -->
+        <rect x="65" y="148" width="40" height="5" rx="2" fill="#C9982A" opacity="0.8"/>
+      </g>
+
+      <!-- === TROPHY CUP === -->
+      <!-- Cup body -->
+      <path d="M130,40 Q140,30 200,28 Q260,30 270,40 L255,160 Q240,200 200,210 Q160,200 145,160 Z"
+            fill="url(#goldBody)" filter="url(#softGlow)"/>
+
+      <!-- Cup inner shadow/depth -->
+      <path d="M140,50 Q160,40 200,38 Q240,40 260,50 L248,150 Q236,185 200,195 Q164,185 152,150 Z"
+            fill="url(#cupInner)"/>
+
+      <!-- Cup top rim -->
+      <ellipse cx="200" cy="40" rx="72" ry="14" fill="url(#goldMain)" stroke="#F5D885" stroke-width="1"/>
+
+      <!-- Decorative band on cup -->
+      <path d="M148,100 Q200,108 252,100 L250,115 Q200,123 150,115 Z" fill="url(#goldSide)" opacity="0.6"/>
+
+      <!-- Arabic letter ح on cup -->
+      <text x="200" y="135" text-anchor="middle" font-family="Scheherazade New, serif"
+            font-size="72" font-weight="700" fill="url(#goldMain)" filter="url(#glow)"
+            stroke="#8B6914" stroke-width="0.5"></text>
+
+      <!-- Stars decoration on cup -->
+      <text x="165" y="80" font-size="14" fill="#F5D885" opacity="0.7" text-anchor="middle">✦</text>
+      <text x="235" y="80" font-size="14" fill="#F5D885" opacity="0.7" text-anchor="middle">✦</text>
+
+      <!-- Handles -->
+      <!-- Left handle -->
+      <path d="M130,80 Q90,80 88,130 Q88,175 130,170"
+            fill="none" stroke="url(#goldMain)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M130,80 Q90,80 88,130 Q88,175 130,170"
+            fill="none" stroke="#F5D885" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+
+      <!-- Right handle -->
+      <path d="M270,80 Q310,80 312,130 Q312,175 270,170"
+            fill="none" stroke="url(#goldMain)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M270,80 Q310,80 312,130 Q312,175 270,170"
+            fill="none" stroke="#F5D885" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+
+      <!-- Handle decorations -->
+      <circle cx="90" cy="130" r="7" fill="url(#goldMain)" stroke="#F5D885" stroke-width="1"/>
+      <circle cx="310" cy="130" r="7" fill="url(#goldMain)" stroke="#F5D885" stroke-width="1"/>
+
+      <!-- Trophy stem -->
+      <path d="M180,210 L190,280 L210,280 L220,210 Z" fill="url(#goldBody)"/>
+
+      <!-- Stem connector -->
+      <ellipse cx="200" cy="212" rx="20" ry="6" fill="url(#goldMain)"/>
+      <ellipse cx="200" cy="278" rx="25" ry="7" fill="url(#goldMain)"/>
+
+      <!-- Base layers -->
+      <rect x="148" y="278" width="104" height="20" rx="4" fill="url(#goldBase)" stroke="#C9982A" stroke-width="1"/>
+      <rect x="135" y="295" width="130" height="16" rx="4" fill="url(#goldMain)" stroke="#F5D885" stroke-width="0.5"/>
+      <rect x="148" y="308" width="104" height="10" rx="3" fill="url(#goldBase)"/>
+
+      <!-- Base bottom -->
+      <ellipse cx="200" cy="320" rx="55" ry="10" fill="url(#goldMain)" stroke="#C9982A" stroke-width="1"/>
+
+      <!-- Engraving on base -->
+      <text x="200" y="308" text-anchor="middle" font-family="Scheherazade New, serif"
+            font-size="10" fill="#8B6914" letter-spacing="2">بطولة حروف</text>
+
+      <!-- Crown on top of cup -->
+      <g transform="translate(200, 27)">
+        <path d="M-20,0 L-25,-18 L-10,-10 L0,-22 L10,-10 L25,-18 L20,0 Z"
+              fill="url(#goldMain)" stroke="#F5D885" stroke-width="1" filter="url(#glow)"/>
+        <!-- Jewels on crown -->
+        <circle cx="-12" cy="-6" r="3" fill="#E05050" opacity="0.9"/>
+        <circle cx="0" cy="-10" r="3.5" fill="#4080E0" opacity="0.9"/>
+        <circle cx="12" cy="-6" r="3" fill="#50C050" opacity="0.9"/>
+      </g>
+
+      <!-- Stars around trophy -->
+      <text x="88" y="58" font-size="16" fill="#F0C060" opacity="0.6" filter="url(#glow)">★</text>
+      <text x="300" y="58" font-size="16" fill="#F0C060" opacity="0.6" filter="url(#glow)">★</text>
+      <text x="195" y="22" font-size="12" fill="#F5D885" opacity="0.8">✦</text>
+
+      <!-- Decorative lines on base -->
+      <line x1="155" y1="302" x2="245" y2="302" stroke="#F5D885" stroke-width="0.5" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <div class="bottom-info">
+    <div class="year-text">2025</div>
+    <div class="tagline">✦  الاسم  ✦</div>
+  </div>
+</div>
+
+<script>
+  // Create floating particles
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      left: ${Math.random() * 100}%;
+      bottom: ${Math.random() * 40}%;
+      --dur: ${3 + Math.random() * 4}s;
+      animation-delay: ${Math.random() * 5}s;
+    `;
+    container.appendChild(p);
+  }
+</script>
+</body>
+</html>
